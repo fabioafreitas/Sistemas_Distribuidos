@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
+    <title>Task Individual 07</title>   
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-light bg-light">
+            <div class="mx-auto">
+                <a class="navbar-brand" href="#">
+                    <img class="img-fluid" src="images/logo.png" alt="logo" style="max-width: 400px">
+                </a>
+            </div>
+        </nav>
+        <div class="container" >
+            <div class="row justify-content-center" style="margin-top: 5vh">
+                <div class="col-3">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Sensor 1</span>
+                        </div>
+                        <input type="text" class="form-control" v-model="sensor1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Sensor 2</span>
+                        </div>
+                        <input type="text" class="form-control" v-model="sensor2">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Sensor 3</span>
+                        </div>
+                        <input type="text" class="form-control" v-model="sensor3">
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <button class="btn btn-secondary btn-block" @click="getTemperatura()">Atualizar Valores</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <footer>
+        <script type="text/javascript" src="vuejs/vue.js"></script>
+        <script type="text/javascript" src="axios/axios.min.js"></script>
+        <script type="text/javascript">
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    url: 'https://iot-sd-backend.herokuapp.com',
+                    sensor1: 0,
+                    sensor2: 0,
+                    sensor3: 0,
+                    respostaJson: {}
+                },
+                methods: {
+                    getTemperatura() {
+                        axios.get(this.url+"/sensores").then(response => {
+                            this.respostaJson = response.data
+                        })
+                        this.sensor1 = this.respostaJson[0].temperatura
+                        this.sensor2 = this.respostaJson[1].temperatura
+                        this.sensor3 = this.respostaJson[2].temperatura
+                    }
+                }
+            });
+        </script>
+    </footer>
+</body>
+</html>
